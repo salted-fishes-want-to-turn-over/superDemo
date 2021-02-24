@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DeptMapper">
+
+    <resultMap id="dept" type="com.example.entity.Dept">
+        <id column="deptno" property="deptno"/>
+        <result column="dname" property="dname"/>
+        <result column="dbSource" property="dbSource"/>
+    </resultMap>
+
+    <select id="getDeptById" parameterType="Long" resultMap="dept">
+        select dept_no, dept_name, dept_dbsource from dept where dept_no = #{deptId}
+    </select>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.example.entity.DTO.DeptDTO">
+        insert into dept
+        (dept_name, dept_dbsource)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.deptName}, #{item.deptDbsource}
+            )
+        </foreach>
+    </insert>
+</mapper>
