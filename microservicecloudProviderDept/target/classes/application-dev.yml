@@ -40,3 +40,20 @@ mybatis-plus:
     cache-enabled: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 600
+  thumb-image:
+    width: 150
+    height: 150
+  tracker-list: 182.254.171.122:22122
+#  excelTemplate:
+#    ownerinfo: group1/M00/00/19/Cs6OzV5SlkeAB-9YAAAzmcY6xI886.xlsx
+#    residentInfo: group1/M00/00/18/Cs6OzV5RCb-AI1voAAAzDcl-gwY31.xlsx
+#    buildingInfo: group1/M00/00/27/Cs6OzV5YmiyAdxOxAAAjEpzOseE25.xlsx
+#    houseInfo: group1/M00/00/27/Cs6OzV5YmjiAfoZCAAAkoM7e6mY10.xlsx
+#    parkingInfo: group1/M00/00/27/Cs6OzV5YmkWAJw_oAAAj0NWn5SU98.xlsx
+#    communityInfo: group1/M00/00/27/Cs6OzV5YmhSAHfirAAAm5tzcL9A26.xlsx
+#    unpaybill: group1/M00/00/22/Cs6OzV5XX-OAcamZAAAqs0yXT5c67.xlsx
+#    payedbill: group1/M00/00/22/Cs6OzV5XX8mANmJmAAAr5Y7_Pik06.xlsx
+
