@@ -28,7 +28,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
 //
 
   /**
-  * 批量删除社区
+  * 批量删除部门
   *
   * @param ids 需要删除的数据ID
   * @return 结果
@@ -36,7 +36,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
 //    int deleteDeptByIds(String ids);
 
     /***
-     * 按照id查询社区
+     * 按照id查询部门
      * @param deptId
      * @return
      */

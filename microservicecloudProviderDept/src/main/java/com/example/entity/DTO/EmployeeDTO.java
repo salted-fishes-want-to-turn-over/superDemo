@@ -34,15 +34,16 @@ public class EmployeeDTO {
     private Long deptId;
 
 
-    @ApiModelProperty(example = "1", position = 99, notes = "（页数）分页时必填")
+    @ApiModelProperty(example = "1", position = 99, notes = "（页数）分页时必填")//pageNo
     private Integer page;
-    @ApiModelProperty(example = "20", position = 100, notes = "（页长）分页时必填")
+    @ApiModelProperty(example = "20", position = 100, notes = "（页长）分页时必填")//pageSize
     private Integer limit;
 
     public Integer getPage() {
         return page == null || page <= 0 ? 1 : page;
     }
 
+    // 一页先设置为10条数据
     public Integer getLimit() {
         return limit == null || page <= 0  ? 100 : limit;
     }

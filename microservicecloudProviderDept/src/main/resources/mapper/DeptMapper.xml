@@ -3,9 +3,9 @@
 <mapper namespace="com.example.mapper.DeptMapper">
 
     <resultMap id="dept" type="com.example.entity.Dept">
-        <id column="deptno" property="deptno"/>
-        <result column="dname" property="dname"/>
-        <result column="dbSource" property="dbSource"/>
+        <id column="dept_no" property="deptNo"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="dept_dbsource" property="deptDbsource"/>
     </resultMap>
 
     <select id="getDeptById" parameterType="Long" resultMap="dept">

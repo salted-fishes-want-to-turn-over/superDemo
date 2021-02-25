@@ -11,4 +11,20 @@
 				where de.dept_name=#{deptName}
     </select>
 
+	<select id="getEmployeeByPage" resultType="com.example.entity.Employee">
+		-- 分页查询相同地址员工表员工
+		select
+		*
+		from employee as em
+		<where>
+			<if test="employee != null and employee.employeeId != null">
+				em.employee_id = #{employee.employeeId}
+			</if>
+			<if test="employee != null and employee.employeeAddress != null">
+				em.employee_address = #{employee.employeeAddress}
+			</if>
+		</where>
+		ORDER BY em.employee_id asc
+	</select>
+
 </mapper>

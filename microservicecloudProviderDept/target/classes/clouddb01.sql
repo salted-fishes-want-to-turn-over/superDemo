@@ -18,7 +18,7 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP DATABASE IF EXISTS `clouddb01`;
-CREATE DATABASE IF NOT EXISTS `clouddb01`
+CREATE DATABASE IF NOT EXISTS `clouddb01`;
 USE `clouddb01`;
 -- ----------------------------
 -- Table structure for dept

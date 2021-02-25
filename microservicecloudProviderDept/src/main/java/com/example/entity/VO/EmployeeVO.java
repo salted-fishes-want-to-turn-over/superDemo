@@ -29,4 +29,7 @@ public class EmployeeVO implements Serializable {
 
     @ApiModelProperty("部门表的名称")
     private String  deptName;
+
+    @ApiModelProperty("部门表的名称")
+    private String  deptDbsource;
 }
