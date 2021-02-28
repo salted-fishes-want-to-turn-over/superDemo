@@ -59,5 +59,17 @@ INSERT INTO `employee` VALUES (1, '小明', '137xxxxxxxx', '福建福州', 2);
 INSERT INTO `employee` VALUES (2, 'taotao', '1860591xxxx', '福州长乐', 1);
 INSERT INTO `employee` VALUES (3, '张三', '1234xxxxxxx', '广州', 1);
 INSERT INTO `employee` VALUES (4, '李思', '1677676765', '深圳', 2);
+INSERT INTO `employee` VALUES (5, '小红', '15898544189', '福建福州', 5);
+INSERT INTO `employee` VALUES (6, '小青', '12345678987', '福建福州', 5);
+INSERT INTO `employee` VALUES (7, '小兰', '214xxxxxxxxx', '福建福州', 3);
+INSERT INTO `employee` VALUES (8, '小兰2', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (9, '小兰3', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (10, '小兰4', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (11, '小兰4', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (12, '小兰6', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (13, '小兰7', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (14, '小兰8', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (15, '小兰9', NULL, '福建福州', 1);
+INSERT INTO `employee` VALUES (16, '小兰10', NULL, '福建福州', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

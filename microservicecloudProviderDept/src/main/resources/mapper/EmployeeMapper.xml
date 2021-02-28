@@ -27,4 +27,39 @@
 		ORDER BY em.employee_id asc
 	</select>
 
+	<select id="queryAllExportData"  resultType="com.example.entity.VO.EmployeeDeptVO">
+		select em.employee_id, em.employee_name, em.employee_phone, em.employee_address, em.dept_id, de.dept_name, de.dept_dbsource from employee em
+		left join dept de
+		on em.dept_id=de.dept_no
+		<where>
+			<if test="EmployeeDeptDTO.employeeId != null">
+				AND em.employee_id = #{EmployeeDeptDTO.employeeId}
+			</if>
+			<if test="EmployeeDeptDTO.employeeName != null and EmployeeDeptDTO.employeeName != ''">
+				AND INSTR(em.employee_name,#{EmployeeDeptDTO.employeeName})
+			</if>
+			<if test="EmployeeDeptDTO.employeePhone != null and EmployeeDeptDTO.employeePhone != ''">
+				AND INSTR(em.employee_phone,#{EmployeeDeptDTO.employeePhone})
+			</if>
+			<if test="EmployeeDeptDTO.employeeAddress != null and EmployeeDeptDTO.employeeAddress != ''">
+				AND INSTR(em.employee_address,#{EmployeeDeptDTO.employeeAddress})
+			</if>
+			<if test="EmployeeDeptDTO.deptName != null and EmployeeDeptDTO.deptName != ''">
+				AND INSTR(em.dept_name,#{EmployeeDeptDTO.deptName})
+			</if>
+		</where>
+    </select>
+
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="employeeId"
+			parameterType="com.example.entity.ExcelImport.EmployeeImport">
+		insert into employee
+		(employee_name, employee_phone, employee_address, dept_id)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(
+			#{item.employeeName}, #{item.employeePhone}, #{item.employeeAddress}, #{item.deptId}
+			)
+
+		</foreach>
+	</insert>
 </mapper>

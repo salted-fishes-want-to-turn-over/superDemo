@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.common.utils.PageUtil;
 import com.example.common.utils.SmartBeanUtil;
+import com.example.entity.DTO.DeptDTO;
 import com.example.entity.DTO.EmployeeDTO;
+import com.example.entity.DTO.EmployeeDeptDTO;
 import com.example.entity.Employee;
+import com.example.entity.ExcelImport.EmployeeImport;
+import com.example.entity.VO.EmployeeDeptVO;
 import com.example.entity.VO.EmployeeVO;
 import com.example.mapper.EmployeeMapper;
 import com.example.service.IEmployeeService;
@@ -75,4 +79,31 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return new PageUtil(employees,var.getTotal(),(int)var.getSize(),(int)var.getCurrent());
     }
 
+    /**
+     * 查询全部导出对象
+     *
+     * @param queryDTO
+     * @return
+     */
+    @Override
+    public List<EmployeeDeptVO> queryAllExportData(EmployeeDeptDTO queryDTO) {
+        EmployeeDeptDTO newEmployeeDeptDTO = new EmployeeDeptDTO();
+        if(queryDTO.getEmployeeAddress()!=null || queryDTO.getEmployeeAddress()!=" "){
+            newEmployeeDeptDTO.setEmployeeAddress(queryDTO.getEmployeeAddress());
+        }
+
+        return employeeMapper.queryAllExportData(newEmployeeDeptDTO);
+    }
+
+    /**
+     * 批量插入部门信息
+     * @param employeeImportList
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int batchSave(List<EmployeeImport> employeeImportList) throws Exception{
+        int count = employeeMapper.insertBatch(employeeImportList);
+        return count;
+    }
 }

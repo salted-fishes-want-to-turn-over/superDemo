@@ -18,6 +18,7 @@
         <swagger.version>2.7.0</swagger.version>
         <hutool.version>5.4.5</hutool.version>
         <guava.version>29.0-jre</guava.version>
+        <knife4j.version>2.0.4</knife4j.version>
     </properties>
 
     <dependencies>
@@ -45,12 +46,12 @@
             <scope>runtime</scope>
         </dependency>
 
-<!--        &lt;!&ndash; 阿里的druid数据库连接池 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba</groupId>-->
-<!--            <artifactId>druid</artifactId>-->
-<!--            <version>1.2.3</version>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; 阿里的druid数据库连接池 &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>druid</artifactId>-->
+        <!--            <version>1.2.3</version>-->
+        <!--        </dependency>-->
 
         <!--mybatis-plus启动器依赖 整合mybatis-plus和spring boot 的包-->
         <dependency>
@@ -93,12 +94,21 @@
         </dependency>
         <!-- swagger end -->
 
+
         <!--&lt;!&ndash;阿里的json&ndash;&gt;-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
+
+        <!-- easy poi begin -->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-spring-boot-starter</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <!-- easy poi end -->
 
         <dependency>
             <groupId>junit</groupId>
@@ -128,6 +138,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
+        <!--fastdfs依赖-->
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.5</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
 
     </dependencies>
