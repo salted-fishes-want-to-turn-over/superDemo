@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,9 @@ import com.example.common.utils.FastdfsClientUtil;
 public class FastdfsController {
     @Resource
     FastdfsClientUtil fastdfsClientUtil;
+
+    @Value("${fdfs.excelTemplate.employeeInfo}")
+    private String employeeTemplateUrl;
 
     @PostMapping("uploadExcel")
     @ApiOperation("上传文件到服务器")
@@ -52,42 +56,16 @@ public class FastdfsController {
         return R.ok().put("File StoreUrl: ",fileStorePath);
     }
 
-    @PostMapping("uploadImage")
-    @ApiOperation("上传图片到服务器")
-    @ApiImplicitParam(name = "file",value = "图片文件",required = true,dataType = "MultipartFile")
-    public R uploadImage(@RequestParam("file") MultipartFile file){
-        String imageStorePath = null;
+    @RequestMapping("downloadEmployeeTemplate")
+    @ApiOperation("从服务器上下载employee文件")
+    public void download(HttpServletResponse response){
         try{
-            imageStorePath = fastdfsClientUtil.uploadImage(file);
+            fastdfsClientUtil.downLoadFile(response , employeeTemplateUrl,"员工信息模板");
         }catch (IOException e){
             e.printStackTrace();
         }
-        return R.ok().put("imageStoreUrl" , imageStorePath);
     }
 
-    @PostMapping("uploadImageAndCrtThumb")
-    @ApiOperation("上传图片到服务器并压缩")
-    @ApiImplicitParam(name = "file",value = "图片文件",required = true,dataType = "MultipartFile")
-    public R uploadImageAndCrtThumb(@RequestParam("file") MultipartFile file){
-        String imageStorePath = null;
-        try{
-            imageStorePath = fastdfsClientUtil.uploadImageAndCrtThumb(file);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return R.ok().put("imageStoreUrl" , imageStorePath);
-    }
-
-    @RequestMapping("download")
-    @ApiOperation("从服务器上下载文件")
-    @ApiImplicitParam(name = "fileUrl",value = "文件存储地址",required = true,dataType = "String")
-    public void download(HttpServletResponse response , @RequestParam("fileUrl") String fileUrl){
-        try{
-            fastdfsClientUtil.downLoadFile(response , fileUrl,"图片");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
 
     @DeleteMapping
     @ApiOperation("删除服务器上的文件")
@@ -98,4 +76,32 @@ public class FastdfsController {
         }
         return R.error();
     }
+
+//    @PostMapping("uploadImage")
+//    @ApiOperation("上传图片到服务器")
+//    @ApiImplicitParam(name = "file",value = "图片文件",required = true,dataType = "MultipartFile")
+//    public R uploadImage(@RequestParam("file") MultipartFile file){
+//        String imageStorePath = null;
+//        try{
+//            imageStorePath = fastdfsClientUtil.uploadImage(file);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return R.ok().put("imageStoreUrl" , imageStorePath);
+//    }
+//
+//    @PostMapping("uploadImageAndCrtThumb")
+//    @ApiOperation("上传图片到服务器并压缩")
+//    @ApiImplicitParam(name = "file",value = "图片文件",required = true,dataType = "MultipartFile")
+//    public R uploadImageAndCrtThumb(@RequestParam("file") MultipartFile file){
+//        String imageStorePath = null;
+//        try{
+//            imageStorePath = fastdfsClientUtil.uploadImageAndCrtThumb(file);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return R.ok().put("imageStoreUrl" , imageStorePath);
+//    }
+
+
 }
