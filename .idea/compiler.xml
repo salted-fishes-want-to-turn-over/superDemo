@@ -8,12 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="microservicecloudProviderDept" />
+        <module name="userRoleEmployDeptFrame" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="microservicecloudapi" target="1.8" />
       <module name="microservicecloudProviderDept" target="1.8" />
       <module name="superDemo" target="1.8" />
+      <module name="userRoleEmployDeptFrame" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -21,6 +23,7 @@
       <module name="microservicecloudProviderDept" options="-parameters" />
       <module name="microservicecloudapi" options="-parameters" />
       <module name="superDemo" options="-parameters" />
+      <module name="userRoleEmployDeptFrame" options="-parameters" />
     </option>
   </component>
 </project>
