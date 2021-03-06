@@ -3,6 +3,7 @@ package cn.yubajin.smartadmin;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -17,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @since JDK1.8
  *
  */
-@SpringBootApplication(scanBasePackages = {"cn.yubajin.smartadmin.module"})
+@SpringBootApplication(scanBasePackages = {"cn.yubajin.smartadmin.*"})
 @EnableCaching
 @EnableScheduling
 public class UserRoleEmployDeptFrameApplication {

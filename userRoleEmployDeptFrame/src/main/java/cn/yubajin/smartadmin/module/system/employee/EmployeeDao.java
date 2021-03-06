@@ -1,6 +1,7 @@
 package cn.yubajin.smartadmin.module.system.employee;
 
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
+import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeQueryDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.entity.EmployeeEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,7 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,15 +20,15 @@ import java.util.List;
 @Mapper
 @Component
 public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
-//    /**
-//     * 查询员工列表
-//     *
-//     * @param page
-//     * @param queryDTO
-//     * @return
-//     */
-//    List<EmployeeDTO> selectEmployeeList(Page page, @Param("queryDTO") EmployeeQueryDTO queryDTO);
-//
+    /**
+     * 查询员工列表
+     *
+     * @param page
+     * @param queryDTO
+     * @return
+     */
+    List<EmployeeDTO> selectEmployeeList(Page page, @Param("queryDTO") EmployeeQueryDTO queryDTO);
+
 //    /**
 //     * 不带分页查询员工列表
 //     *

@@ -13,7 +13,7 @@ public class SwaggerTagConst {
     public static class Admin {
 //        public static final String MANAGER_SYSTEM_CONFIG = "管理端-系统配置";
 //
-//        public static final String MANAGER_USER = "管理端-用户";
+        public static final String MANAGER_USER = "管理端-用户";
 //
 //        public static final String MANAGER_USER_LOGIN = "管理端-用户登录";
 //
