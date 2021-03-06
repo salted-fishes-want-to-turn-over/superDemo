@@ -18,6 +18,7 @@
         d.create_time
     </sql>
 
+<!--    注意返回结果是依据sort来排序的，为部门上下移动功能做铺垫-->
     <select id="listAll" resultMap="DepartmentVO">
         SELECT
         <include refid="baseSql"></include>,

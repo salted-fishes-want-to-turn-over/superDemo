@@ -76,5 +76,25 @@ public class DepartmentController {
         return departmentService.listAll();
     }
 
+    @ApiOperation(value = "上下移动")
+    @GetMapping("/department/upOrDown/{deptId}/{swapId}")
+    public ResponseDTO<String> upOrDown(@PathVariable Long deptId, @PathVariable Long swapId) {
+        return departmentService.upOrDown(deptId, swapId);
+    }
+
+
+    @ApiOperation(value = "升级")
+    @GetMapping("/department/upgrade/{deptId}")
+    public ResponseDTO<String> upgrade(@PathVariable Long deptId) {
+        return departmentService.upgrade(deptId);
+    }
+
+    @ApiOperation(value = "降级")
+    @GetMapping("/department/downgrade/{deptId}/{preId}")
+    public ResponseDTO<String> downgrade(@PathVariable Long deptId, @PathVariable Long preId) {
+        return departmentService.downgrade(deptId, preId);
+    }
+
+
 
 }

@@ -218,4 +218,74 @@ public class DepartmentService {
         return ResponseDTO.succData(departmentVOList);
     }
 
+    /**
+     * 上下移动
+     *
+     * @param departmentId
+     * @param swapId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseDTO<String> upOrDown(Long departmentId, Long swapId) {
+        DepartmentEntity departmentEntity = departmentDao.selectById(departmentId);
+        if (departmentEntity == null) {
+            return ResponseDTO.wrap(DepartmentResponseCodeConst.NOT_EXISTS);
+        }
+        DepartmentEntity swapEntity = departmentDao.selectById(swapId);
+        if (swapEntity == null) {
+            return ResponseDTO.wrap(DepartmentResponseCodeConst.NOT_EXISTS);
+        }
+        Long departmentSort = departmentEntity.getSort();
+        departmentEntity.setSort(swapEntity.getSort());
+        departmentDao.updateById(departmentEntity);
+        swapEntity.setSort(departmentSort);
+        departmentDao.updateById(swapEntity);
+        return ResponseDTO.succ();
+    }
+
+
+    /**
+     * 部门升级
+     *
+     * @param departmentId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseDTO<String> upgrade(Long departmentId) {
+        DepartmentEntity departmentEntity = departmentDao.selectById(departmentId);
+        if (departmentEntity == null) {
+            return ResponseDTO.wrap(DepartmentResponseCodeConst.NOT_EXISTS);
+        }
+        if (departmentEntity.getParentId() == null || departmentEntity.getParentId().equals(0)) {
+            return ResponseDTO.wrap(DepartmentResponseCodeConst.ERROR_PARAM, "此部门已经是根节点无法移动");
+        }
+        DepartmentEntity parentEntity = departmentDao.selectById(departmentEntity.getParentId());
+
+        departmentEntity.setParentId(parentEntity.getParentId());
+        departmentDao.updateById(departmentEntity);
+        return ResponseDTO.succ();
+    }
+
+    /**
+     * 部门降级
+     *
+     * @param departmentId
+     * @param preId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseDTO<String> downgrade(Long departmentId, Long preId) {
+        DepartmentEntity departmentEntity = departmentDao.selectById(departmentId);
+        if (departmentEntity == null) {
+            return ResponseDTO.wrap(DepartmentResponseCodeConst.NOT_EXISTS);
+        }
+        DepartmentEntity preEntity = departmentDao.selectById(preId); //降级后把前面位置的部门当作父节点
+        if (preEntity == null) {
+            return ResponseDTO.wrap(DepartmentResponseCodeConst.NOT_EXISTS);
+        }
+        departmentEntity.setParentId(preEntity.getId());
+        departmentDao.updateById(departmentEntity);
+        return ResponseDTO.succ();
+    }
+
 }
