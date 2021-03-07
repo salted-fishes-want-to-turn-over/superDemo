@@ -1,6 +1,7 @@
 package cn.yubajin.smartadmin.interceptor;
 
 import cn.yubajin.smartadmin.constant.CommonConst;
+import cn.yubajin.smartadmin.util.SmartRequestTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -77,7 +78,7 @@ public class SmartAuthenticationInterceptor extends HandlerInterceptorAdapter {
 //            this.outputResult(response, LoginResponseCodeConst.LOGIN_ERROR);
 //            return false;
 //        }
-//
+
 //        //判断接口权限
 //        String methodName = ((HandlerMethod) handler).getMethod().getName();
 //        String className = ((HandlerMethod) handler).getBeanType().getName();

@@ -1,3 +1,4 @@
+import cn.yubajin.smartadmin.constant.CommonConst;
 import cn.yubajin.smartadmin.module.system.department.domain.vo.DepartmentVO;
 import org.junit.Test;
 
@@ -8,7 +9,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DepartmentUtilsTest {
-    
+
+    private static final String RESET_PASSWORD = "123456";
+
     @Test
     public void testStream(){
         List<DepartmentVO> departmentVOList = new ArrayList();
@@ -17,5 +20,12 @@ public class DepartmentUtilsTest {
 
         List<DepartmentVO> list = departmentVOList.stream().filter(e -> e.getParentId() == null || e.getParentId() == 0).collect(Collectors.toList());
 
+    }
+
+    @Test
+    public void StringFormate(){
+
+        String result = String.format(CommonConst.Password.SALT_FORMAT, RESET_PASSWORD);
+        System.out.println(result);
     }
 }

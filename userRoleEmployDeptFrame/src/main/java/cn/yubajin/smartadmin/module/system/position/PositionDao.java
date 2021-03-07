@@ -1,5 +1,6 @@
 package cn.yubajin.smartadmin.module.system.position;
 
+import cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationAddDTO;
 import cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationResultDTO;
 import cn.yubajin.smartadmin.module.system.position.domain.entity.PositionEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -40,14 +41,14 @@ public interface PositionDao extends BaseMapper<PositionEntity> {
      */
     List<PositionRelationResultDTO> selectEmployeesRelation(@Param("employeeIdList") List<Long> employeeIdList);
 
-//    /**
-//     * 批量添加岗位 人员 关联关系
-//     *
-//     * @param positionRelationAddDTO
-//     * @return
-//     */
-//    Integer insertBatchRelation(@Param("batchDTO")PositionRelationAddDTO positionRelationAddDTO);
-//
+    /**
+     * 批量添加岗位 人员 关联关系
+     *
+     * @param positionRelationAddDTO
+     * @return
+     */
+    Integer insertBatchRelation(@Param("batchDTO") PositionRelationAddDTO positionRelationAddDTO);
+
 //    /**
 //     * 删除指定人员的 岗位关联关系
 //     *

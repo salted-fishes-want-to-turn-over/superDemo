@@ -149,6 +149,13 @@
             <version>${knife4j.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/org.apache.commons.codec -->
+        <!--    加密    SmartDigestUtil.md5Hex-->
+        <dependency>
+            <groupId>org.apache.directory.studio</groupId>
+            <artifactId>org.apache.commons.codec</artifactId>
+            <version>1.8</version>
+        </dependency>
 
     </dependencies>
 </project>

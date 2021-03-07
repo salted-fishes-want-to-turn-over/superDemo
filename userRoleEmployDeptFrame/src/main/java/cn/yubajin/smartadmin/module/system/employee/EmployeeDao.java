@@ -3,6 +3,7 @@ package cn.yubajin.smartadmin.module.system.employee;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeQueryDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.entity.EmployeeEntity;
+import cn.yubajin.smartadmin.module.system.employee.domain.vo.EmployeeVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -53,24 +54,24 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
 //     * @return
 //     */
 //    EmployeeDTO login(@Param("loginName") String loginName, @Param("loginPwd") String loginPwd);
-//
-//    /**
-//     * 通过登录名查询
-//     *
-//     * @param loginName
-//     * @param isDisabled
-//     * @return
-//     */
-//    EmployeeDTO getByLoginName(@Param("loginName") String loginName, @Param("isDisabled") Integer isDisabled);
-//
-//    /**
-//     * 通过手机号查询
-//     *
-//     * @param phone
-//     * @param isDisabled
-//     * @return
-//     */
-//    EmployeeDTO getByPhone(@Param("phone") String phone, @Param("isDisabled") Integer isDisabled);
+
+    /**
+     * 通过登录名查询
+     *
+     * @param loginName
+     * @param isDisabled
+     * @return
+     */
+    EmployeeDTO getByLoginName(@Param("loginName") String loginName, @Param("isDisabled") Integer isDisabled);
+
+    /**
+     * 通过手机号查询
+     *
+     * @param phone
+     * @param isDisabled
+     * @return
+     */
+    EmployeeDTO getByPhone(@Param("phone") String phone, @Param("isDisabled") Integer isDisabled);
 
     /**
      * 获取所有员工
@@ -124,12 +125,5 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
 //     * @return
 //     */
 //    Integer updatePassword(@Param("employeeId") Integer employeeId, @Param("password") String password);
-//
-//
-//    /**
-//     * 查询所有员工
-//     *
-//     * @return
-//     */
-//    List<EmployeeVO> selectAll();
+
 }

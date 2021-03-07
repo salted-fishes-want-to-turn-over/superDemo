@@ -62,12 +62,12 @@
         </where>
     </select>
 
-<!--    <insert id="insertBatchRelation">-->
-<!--        INSERT INTO t_position_relation (position_id,employee_id) VALUES-->
-<!--        <foreach collection="batchDTO.positionIdList" item="item" separator=",">-->
-<!--            (#{item},#{batchDTO.employeeId})-->
-<!--        </foreach>-->
-<!--    </insert>-->
+    <insert id="insertBatchRelation">
+        INSERT INTO t_position_relation (position_id,employee_id) VALUES
+        <foreach collection="batchDTO.positionIdList" item="item" separator=",">
+            (#{item},#{batchDTO.employeeId})
+        </foreach>
+    </insert>
 
 
 <!--    <delete id="deleteRelationByEmployeeId">-->
