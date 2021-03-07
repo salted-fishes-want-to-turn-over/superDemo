@@ -54,7 +54,7 @@ public class EmployeeResponseCodeConst extends ResponseCodeConst {
 
     public static final EmployeeResponseCodeConst BIRTHDAY_ERROR = new EmployeeResponseCodeConst(3010, "生日格式不正确");
 
-    public static final EmployeeResponseCodeConst EMAIL_ERROR = new EmployeeResponseCodeConst(3011, "生日格式不正确");
+    public static final EmployeeResponseCodeConst EMAIL_ERROR = new EmployeeResponseCodeConst(3011, "邮件格式不正确");
 
     public static final EmployeeResponseCodeConst VERIFICATION_CODE_INVALID = new EmployeeResponseCodeConst(3012, "验证码无效");
 
