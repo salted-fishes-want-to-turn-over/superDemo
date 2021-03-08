@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * @author yubajin
+ * @date 2021年3月8日上午15:51:04
  */
 @Getter
 public class RequestTokenBO {

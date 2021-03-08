@@ -2,6 +2,7 @@ package cn.yubajin.smartadmin.common.constant;
 
 import cn.yubajin.smartadmin.module.system.department.DepartmentResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeResponseCodeConst;
+import cn.yubajin.smartadmin.module.system.login.LoginResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.position.PositionResponseCodeConst;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ public class ResponseCodeConst {
     static {
         // 系统功能，从0开始，step=1000
         ResponseCodeContainer.register(ResponseCodeConst.class, 0, 1000);
-//        ResponseCodeContainer.register(LoginResponseCodeConst.class, 1001, 1999);
+        ResponseCodeContainer.register(LoginResponseCodeConst.class, 1001, 1999);
         ResponseCodeContainer.register(DepartmentResponseCodeConst.class, 2001, 2999);
         ResponseCodeContainer.register(EmployeeResponseCodeConst.class, 3001, 3999);
 //        ResponseCodeContainer.register(FileResponseCodeConst.class, 4001, 4999);

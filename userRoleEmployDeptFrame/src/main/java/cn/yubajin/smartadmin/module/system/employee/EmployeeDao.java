@@ -45,15 +45,15 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
 //     * @param isDisabled
 //     */
 //    void batchUpdateStatus(@Param("employeeIds") List<Long> employeeIds, @Param("isDisabled") Integer isDisabled);
-//
-//    /**
-//     * 登录
-//     *
-//     * @param loginName
-//     * @param loginPwd
-//     * @return
-//     */
-//    EmployeeDTO login(@Param("loginName") String loginName, @Param("loginPwd") String loginPwd);
+
+    /**
+     * 登录
+     *
+     * @param loginName
+     * @param loginPwd
+     * @return
+     */
+    EmployeeDTO login(@Param("loginName") String loginName, @Param("loginPwd") String loginPwd);
 
     /**
      * 通过登录名查询

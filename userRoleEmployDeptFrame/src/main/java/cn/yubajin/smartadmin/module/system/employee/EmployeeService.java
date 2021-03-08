@@ -8,12 +8,12 @@ import cn.yubajin.smartadmin.module.system.department.DepartmentDao;
 import cn.yubajin.smartadmin.module.system.department.domain.entity.DepartmentEntity;
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeStatusEnum;
+import cn.yubajin.smartadmin.module.system.employee.domain.bo.EmployeeBO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeAddDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeQueryDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.entity.EmployeeEntity;
 import cn.yubajin.smartadmin.module.system.employee.domain.vo.EmployeeVO;
-import cn.yubajin.smartadmin.module.system.login.domain.RequestTokenBO;
 import cn.yubajin.smartadmin.module.system.position.PositionDao;
 import cn.yubajin.smartadmin.module.system.position.PositionService;
 import cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationAddDTO;
@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,32 @@ public class EmployeeService {
 
     @Autowired
     private PositionService positionService;
+
+
+    /**
+     * 员工基本信息的缓存
+     */
+    private static final ConcurrentHashMap<Long, EmployeeBO> employeeCache = new ConcurrentHashMap<>();
+
+
+    /**
+     * 利用token中的employeeId查出EmployeeBO实体
+     * @param id
+     * @return
+     */
+    public EmployeeBO getById(Long id) {
+        EmployeeBO employeeBO = employeeCache.get(id);
+        if (employeeBO == null) {
+            EmployeeEntity employeeEntity = employeeDao.selectById(id);
+            if (employeeEntity != null) {
+//                Boolean superman = privilegeEmployeeService.isSuperman(id);
+                ////// 后期处理superman问题
+                employeeBO = new EmployeeBO(employeeEntity, false);
+                employeeCache.put(employeeEntity.getId(), employeeBO);
+            }
+        }
+        return employeeBO;
+    }
 
     /**
      * 查询员工列表,一个员工可对应多个岗位
