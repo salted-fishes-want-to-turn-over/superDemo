@@ -11,38 +11,39 @@
         create_time
     </sql>
 
-<!--    <select id="selectByPage" resultType="net.lab1024.smartadmin.module.system.position.domain.entity.PositionEntity">-->
-<!--        SELECT-->
-<!--        <include refid="baseSql"></include>-->
-<!--        FROM-->
-<!--        t_position-->
-<!--        <where>-->
-<!--            <if test="queryDTO.positionName != null and queryDTO.positionName != ''">-->
-<!--                AND INSTR(position_name,#{queryDTO.positionName})-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        order by create_time desc-->
-<!--    </select>-->
+    <select id="selectByPage" resultType="cn.yubajin.smartadmin.module.system.position.domain.entity.PositionEntity">
+        SELECT
+        <include refid="baseSql"></include>
+        FROM
+        t_position
+        <where>
+            <if test="queryDTO.positionName != null and queryDTO.positionName != ''">
+                <!--模糊查找，INSTR要比like速度更快-->
+                AND INSTR(position_name,#{queryDTO.positionName})
+            </if>
+        </where>
+        order by create_time desc
+    </select>
 
-<!--    <select id="selectRelation" resultType="net.lab1024.smartadmin.module.system.position.domain.dto.PositionRelationResultDTO">-->
-<!--        SELECT-->
-<!--        job.position_name,-->
-<!--        rel.position_id,-->
-<!--        rel.employee_id,-->
-<!--        rel.update_time,-->
-<!--        rel.create_time-->
-<!--        FROM-->
-<!--        t_position_relation rel-->
-<!--        LEFT JOIN t_position job ON rel.position_id = job.id-->
-<!--        <where>-->
-<!--            <if test="positionId != null">-->
-<!--                AND rel.position_id = #{positionId}-->
-<!--            </if>-->
-<!--            <if test="employeeId != null">-->
-<!--                AND rel.employee_id = #{employeeId}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
+    <select id="selectRelation" resultType="cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationResultDTO">
+        SELECT
+        job.position_name,
+        rel.position_id,
+        rel.employee_id,
+        rel.update_time,
+        rel.create_time
+        FROM
+        t_position_relation rel
+        LEFT JOIN t_position job ON rel.position_id = job.id
+        <where>
+            <if test="positionId != null">
+                AND rel.position_id = #{positionId}
+            </if>
+            <if test="employeeId != null">
+                AND rel.employee_id = #{employeeId}
+            </if>
+        </where>
+    </select>
 
     <select id="selectEmployeesRelation" resultType="cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationResultDTO">
         SELECT

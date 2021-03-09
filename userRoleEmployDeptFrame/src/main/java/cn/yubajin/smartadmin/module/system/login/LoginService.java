@@ -11,6 +11,7 @@ import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeLoginFormDTO;
 import cn.yubajin.smartadmin.module.system.login.domain.LoginDetailVO;
 import cn.yubajin.smartadmin.module.system.login.domain.RequestTokenBO;
+import cn.yubajin.smartadmin.module.system.privilege.service.PrivilegeEmployeeService;
 import cn.yubajin.smartadmin.util.SmartBeanUtil;
 import cn.yubajin.smartadmin.util.SmartDigestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ public class LoginService {
 
     @Autowired
     private LoginTokenService loginTokenService;
+
+    @Autowired
+    private PrivilegeEmployeeService privilegeEmployeeService;
 
     /**
      * 登陆
@@ -84,4 +88,17 @@ public class LoginService {
 
         return loginDTO;
     }
+
+
+    /**
+     * 手机端退出登陆，清除token缓存
+     *
+     * @param requestToken
+     * @return 退出登陆是否成功，bool
+     */
+    public ResponseDTO<Boolean> logoutByToken(RequestTokenBO requestToken) {
+        privilegeEmployeeService.removeCache(requestToken.getRequestUserId());
+        return ResponseDTO.succ();
+    }
+
 }

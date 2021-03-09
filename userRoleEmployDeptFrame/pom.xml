@@ -164,6 +164,13 @@
             <version>0.9.1</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.googlecode.concurrentlinkedhashmap</groupId>
+            <artifactId>concurrentlinkedhashmap-lru</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+
         <!-- 新增 项目用的jdk版本太高了，换到jdk8好了，或者需要手动添加下列依赖jar包 -->
         <dependency>
             <groupId>javax.xml.bind</groupId>

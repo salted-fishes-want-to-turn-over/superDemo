@@ -57,15 +57,15 @@ public class LoginController {
         return ResponseDTO.succData(loginService.getSession(requestUser));
     }
 
-//    @GetMapping("/session/logOut")
-//    @ApiOperation(value = "退出登陆", notes = "退出登陆")
-//    @NoValidPrivilege
-//    public ResponseDTO<Boolean> logOut() {
-//        RequestTokenBO requestToken = SmartRequestTokenUtil.getRequestUser();
-//        if (null == requestToken) {
-//            return ResponseDTO.wrap(LoginResponseCodeConst.LOGIN_ERROR);
-//        }
-//        return loginService.logoutByToken(requestToken);
-//    }
+    @GetMapping("/session/logOut")
+    @ApiOperation(value = "退出登陆", notes = "退出登陆")
+    @NoValidPrivilege
+    public ResponseDTO<Boolean> logOut() {
+        RequestTokenBO requestToken = SmartRequestTokenUtil.getRequestUser();
+        if (null == requestToken) {
+            return ResponseDTO.wrap(LoginResponseCodeConst.LOGIN_ERROR);
+        }
+        return loginService.logoutByToken(requestToken);
+    }
 
 }
