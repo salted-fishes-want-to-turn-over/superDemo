@@ -4,6 +4,7 @@ import cn.yubajin.smartadmin.module.system.department.DepartmentResponseCodeCons
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.login.LoginResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.position.PositionResponseCodeConst;
+import cn.yubajin.smartadmin.module.system.role.basic.RoleResponseCodeConst;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -25,7 +26,7 @@ public class ResponseCodeConst {
         ResponseCodeContainer.register(EmployeeResponseCodeConst.class, 3001, 3999);
 //        ResponseCodeContainer.register(FileResponseCodeConst.class, 4001, 4999);
 //        ResponseCodeContainer.register(SystemConfigResponseCodeConst.class, 5001, 5999);
-//        ResponseCodeContainer.register(RoleResponseCodeConst.class, 6001, 6999);
+        ResponseCodeContainer.register(RoleResponseCodeConst.class, 6001, 6999);
 //        ResponseCodeContainer.register(PrivilegeResponseCodeConst.class, 7001, 7999);
 //        ResponseCodeContainer.register(OrderOperateLogOperateTypeConst.class, 8001, 8999);
         ResponseCodeContainer.register(PositionResponseCodeConst.class, 13000, 13999);
