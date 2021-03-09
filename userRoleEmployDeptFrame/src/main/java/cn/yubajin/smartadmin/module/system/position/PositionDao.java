@@ -52,12 +52,12 @@ public interface PositionDao extends BaseMapper<PositionEntity> {
      */
     Integer insertBatchRelation(@Param("batchDTO") PositionRelationAddDTO positionRelationAddDTO);
 
-//    /**
-//     * 删除指定人员的 岗位关联关系
-//     *
-//     * @param employeeId
-//     * @return
-//     */
-//    Integer deleteRelationByEmployeeId(@Param("employeeId") Long employeeId);
+    /**
+     * 删除指定人员的 岗位关联关系 (employee update时，调用它的上层service, 删除旧的关联关系 添加新的关联关系)
+     *
+     * @param employeeId
+     * @return
+     */
+    Integer deleteRelationByEmployeeId(@Param("employeeId") Long employeeId);
 
 }

@@ -104,4 +104,14 @@ public class PositionService {
     }
 
 
+    /**
+     * 删除指定用户的岗位关联关系
+     *
+     * @param employeeId
+     * @return
+     */
+    public ResponseDTO<String> removePositionRelation(Long employeeId) {
+        positionDao.deleteRelationByEmployeeId(employeeId);
+        return ResponseDTO.succ();
+    }
 }

@@ -131,7 +131,7 @@
     </select>
 
 
-    <select id="getEmployeeIdByDeptId" resultMap="EmployeeVO">
+    <select id="getEmployeeByDept" resultMap="EmployeeVO">
         SELECT
         <include refid="baseSql"></include>
         FROM

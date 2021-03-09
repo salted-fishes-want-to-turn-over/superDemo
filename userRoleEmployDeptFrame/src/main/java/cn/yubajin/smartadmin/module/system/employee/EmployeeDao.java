@@ -37,14 +37,6 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
 //     * @return
 //     */
 //    List<EmployeeDTO> selectEmployeeList(@Param("queryDTO") EmployeeQueryExportDTO queryDTO);
-//
-//    /**
-//     * 批量更新禁用状态
-//     *
-//     * @param employeeIds
-//     * @param isDisabled
-//     */
-//    void batchUpdateStatus(@Param("employeeIds") List<Long> employeeIds, @Param("isDisabled") Integer isDisabled);
 
     /**
      * 登录
@@ -74,6 +66,14 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
     EmployeeDTO getByPhone(@Param("phone") String phone, @Param("isDisabled") Integer isDisabled);
 
     /**
+     * 获取某个部门的员工
+     *
+     * @param departmentId
+     * @return
+     */
+    List<EmployeeVO> getEmployeeByDept(@Param("departmentId") Long departmentId);
+
+    /**
      * 获取所有员工
      *
      * @return
@@ -89,6 +89,25 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
      */
     Integer countByDepartmentId(@Param("depId") Long depId, @Param("deleteFlag") Boolean deleteFlag);
 
+
+    /**
+     * 员工重置密码
+     *
+     * @param employeeId
+     * @param password
+     * @return
+     */
+    Integer updatePassword(@Param("employeeId") Integer employeeId, @Param("password") String password);
+
+    /**
+     * 批量更新禁用状态
+     *
+     * @param employeeIds
+     * @param isDisabled
+     */
+    void batchUpdateStatus(@Param("employeeIds") List<Long> employeeIds, @Param("isDisabled") Integer isDisabled);
+
+
 //    /**
 //     * 获取一批员工
 //     *
@@ -99,14 +118,7 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
 //
 //
 //    EmployeeDTO getEmployeeById(@Param("id") Long employeeId);
-//
-//    /**
-//     * 获取某个部门的员工
-//     *
-//     * @param departmentId
-//     * @return
-//     */
-//    List<EmployeeVO> getEmployeeIdByDeptId(@Param("departmentId") Long departmentId);
+
 //
 //    /**
 //     * 获取某批部门的员工
@@ -116,14 +128,5 @@ public interface EmployeeDao extends BaseMapper<EmployeeEntity> {
 //     */
 //    List<EmployeeDTO> getEmployeeIdByDeptIds(@Param("departmentIds") List<Long> departmentIds);
 //
-//
-//    /**
-//     * 员工重置密码
-//     *
-//     * @param employeeId
-//     * @param password
-//     * @return
-//     */
-//    Integer updatePassword(@Param("employeeId") Integer employeeId, @Param("password") String password);
 
 }

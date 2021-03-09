@@ -30,6 +30,7 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -139,15 +140,15 @@ public class SmartSwaggerDynamicGroupConfig implements EnvironmentAware, BeanDef
     }
 
     private Docket baseDocket() {
-//        // 配置全局参数 token
-//        ParameterBuilder tokenPar = new ParameterBuilder();
-//        Parameter parameter = tokenPar.name(SmartAuthenticationInterceptor.TOKEN_NAME)
-//                .description("token")
-//                .modelRef(new ModelRef("string"))
-//                .parameterType("header")
-//                .defaultValue("")
-//                .required(false)
-//                .build();
+        // 配置全局参数 token
+        ParameterBuilder tokenPar = new ParameterBuilder();
+        Parameter parameter = tokenPar.name(SmartAuthenticationInterceptor.TOKEN_NAME)
+                .description("token")
+                .modelRef(new ModelRef("string"))
+                .parameterType("header")
+                .defaultValue("")
+                .required(false)
+                .build();
 
         // 请求类型过滤规则
         Predicate<RequestHandler> controllerPredicate = getControllerPredicate();
@@ -161,36 +162,36 @@ public class SmartSwaggerDynamicGroupConfig implements EnvironmentAware, BeanDef
                 .apis(controllerPredicate)
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(this.serviceApiInfo());
-//                .securitySchemes(securitySchemes())
-//                .securityContexts(securityContexts())
-//                .globalOperationParameters(Lists.newArrayList(parameter));
+                .apiInfo(this.serviceApiInfo())
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                .globalOperationParameters(Lists.newArrayList(parameter));
     }
 
-//    private List<ApiKey> securitySchemes() {
-//        List<ApiKey> apiKeyList = new ArrayList<>();
-//        apiKeyList.add(new ApiKey("x-access-token", "x-access-token", "header"));
-//        return apiKeyList;
-//    }
-//
-//    private List<SecurityContext> securityContexts() {
-//        List<SecurityContext> securityContexts = new ArrayList<>();
-//        securityContexts.add(
-//                SecurityContext.builder()
-//                        .securityReferences(defaultAuth())
-//                        .forPaths(PathSelectors.any())
-//                        .build());
-//        return securityContexts;
-//    }
-//
-//    List<SecurityReference> defaultAuth() {
-//        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-//        authorizationScopes[0] = authorizationScope;
-//        List<SecurityReference> securityReferences = new ArrayList<>();
-//        securityReferences.add(new SecurityReference("x-access-token", authorizationScopes));
-//        return securityReferences;
-//    }
+    private List<ApiKey> securitySchemes() {
+        List<ApiKey> apiKeyList = new ArrayList<>();
+        apiKeyList.add(new ApiKey("x-access-token", "x-access-token", "header"));
+        return apiKeyList;
+    }
+
+    private List<SecurityContext> securityContexts() {
+        List<SecurityContext> securityContexts = new ArrayList<>();
+        securityContexts.add(
+                SecurityContext.builder()
+                        .securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.any())
+                        .build());
+        return securityContexts;
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        List<SecurityReference> securityReferences = new ArrayList<>();
+        securityReferences.add(new SecurityReference("x-access-token", authorizationScopes));
+        return securityReferences;
+    }
 
     private Predicate<RequestHandler> getControllerPredicate() {
         groupName = groupList.get(groupIndex);

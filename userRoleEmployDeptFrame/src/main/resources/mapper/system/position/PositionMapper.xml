@@ -71,8 +71,8 @@
     </insert>
 
 
-<!--    <delete id="deleteRelationByEmployeeId">-->
-<!--        DELETE FROM t_position_relation WHERE employee_id = #{employeeId}-->
-<!--    </delete>-->
+    <delete id="deleteRelationByEmployeeId">
+        DELETE FROM t_position_relation WHERE employee_id = #{employeeId}
+    </delete>
 
 </mapper>

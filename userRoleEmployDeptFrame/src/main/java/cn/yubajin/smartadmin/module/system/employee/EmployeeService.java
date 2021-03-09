@@ -9,11 +9,10 @@ import cn.yubajin.smartadmin.module.system.department.domain.entity.DepartmentEn
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeStatusEnum;
 import cn.yubajin.smartadmin.module.system.employee.domain.bo.EmployeeBO;
-import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeAddDTO;
-import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
-import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeQueryDTO;
+import cn.yubajin.smartadmin.module.system.employee.domain.dto.*;
 import cn.yubajin.smartadmin.module.system.employee.domain.entity.EmployeeEntity;
 import cn.yubajin.smartadmin.module.system.employee.domain.vo.EmployeeVO;
+import cn.yubajin.smartadmin.module.system.login.domain.RequestTokenBO;
 import cn.yubajin.smartadmin.module.system.position.PositionDao;
 import cn.yubajin.smartadmin.module.system.position.PositionService;
 import cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationAddDTO;
@@ -23,6 +22,7 @@ import cn.yubajin.smartadmin.util.SmartDigestUtil;
 import cn.yubajin.smartadmin.util.SmartPageUtil;
 import cn.yubajin.smartadmin.util.SmartVerificationUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,7 +65,6 @@ public class EmployeeService {
 
 
     /**
-     * 利用token中的employeeId查出EmployeeBO实体
      * @param id
      * @return
      */
@@ -80,6 +80,16 @@ public class EmployeeService {
             }
         }
         return employeeBO;
+    }
+
+    /**
+     * 通过部门id获取当前部门的人员&没有部门的人
+     * @param departmentId
+     * @return
+     */
+    public ResponseDTO<List<EmployeeVO>> getEmployeeByDeptId(Long departmentId) {
+        List<EmployeeVO> list = employeeDao.getEmployeeByDept(departmentId);
+        return ResponseDTO.succData(list);
     }
 
     /**
@@ -126,13 +136,13 @@ public class EmployeeService {
 
 
     /**
-     * 新增员工
+     * 新增员工, 得存储对应岗位信息(一对多)
      *
      * @param employeeAddDto
      * @param
      * @return
      */
-    public ResponseDTO<String> addEmployee(EmployeeAddDTO employeeAddDto) { //, RequestTokenBO requestToken
+    public ResponseDTO<String> addEmployee(EmployeeAddDTO employeeAddDto, RequestTokenBO requestToken) { //
         EmployeeEntity entity = SmartBeanUtil.copy(employeeAddDto, EmployeeEntity.class);
 
         ////////////////////////////////// 对传入的值进行校验
@@ -178,8 +188,8 @@ public class EmployeeService {
             entity.setLoginPwd(SmartDigestUtil.encryptPassword(CommonConst.Password.SALT_FORMAT, entity.getLoginPwd()));
         }
 
-//        entity.setCreateUser(requestToken.getRequestUserId());
-        entity.setCreateUser(1L);
+        entity.setCreateUser(requestToken.getRequestUserId());
+
         if (StringUtils.isEmpty(entity.getBirthday())) {
             entity.setBirthday(null);
         }
@@ -193,5 +203,162 @@ public class EmployeeService {
         return ResponseDTO.succ();
     }
 
+    /**
+     * 更新员工
+     * @param employeeUpdateDTO
+     * @return
+     */
+    public ResponseDTO<String> updateEmployee(EmployeeUpdateDTO employeeUpdateDTO) {
+        Long employeeId = employeeUpdateDTO.getId();
+        EmployeeEntity employeeEntity = employeeDao.selectById(employeeId);
+        if(null == employeeEntity){
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.EMP_NOT_EXISTS);
+        }
+        /** 验证身份证号 **/
+        if(StringUtils.isNotBlank(employeeUpdateDTO.getIdCard())){
+            boolean matches = Pattern.matches(SmartVerificationUtil.ID_CARD, employeeUpdateDTO.getIdCard());
+            if(!matches){
+                return ResponseDTO.wrap(EmployeeResponseCodeConst.ID_CARD_ERROR);
+            }
+        }
+        /** 验证日期 **/
+        if (StringUtils.isNotEmpty(employeeUpdateDTO.getBirthday())) {
+            boolean checkResult = Pattern.matches(SmartVerificationUtil.DATE, employeeUpdateDTO.getBirthday());
+            if (!checkResult) {
+                return ResponseDTO.wrap(EmployeeResponseCodeConst.BIRTHDAY_ERROR);
+            }
+        }
+        Long departmentId = employeeUpdateDTO.getDepartmentId();
+        DepartmentEntity departmentEntity = departmentDao.selectById(departmentId);
+        if (departmentEntity == null) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.DEPT_NOT_EXIST);
+        }
+        /** 验证是否同名 **/
+        EmployeeDTO sameNameEmployee = employeeDao.getByLoginName(employeeUpdateDTO.getLoginName(), EmployeeStatusEnum.NORMAL.getValue());
+        if (null != sameNameEmployee && !sameNameEmployee.getId().equals(employeeId)) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.LOGIN_NAME_EXISTS);
+        }
+        /** 验证是否同手机号 **/
+        EmployeeDTO samePhoneEmployee = employeeDao.getByPhone(employeeUpdateDTO.getLoginName(), EmployeeStatusEnum.NORMAL.getValue());
+        if (null != samePhoneEmployee && !samePhoneEmployee.getId().equals(employeeId)) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.PHONE_EXISTS);
+        }
+        String newPwd = employeeUpdateDTO.getLoginPwd();
+        if (!StringUtils.isBlank(newPwd)) {
+            employeeUpdateDTO.setLoginPwd(SmartDigestUtil.encryptPassword(CommonConst.Password.SALT_FORMAT, employeeUpdateDTO.getLoginPwd()));
+        } else {
+            employeeUpdateDTO.setLoginPwd(employeeEntity.getLoginPwd());
+        }
+        EmployeeEntity entity = SmartBeanUtil.copy(employeeUpdateDTO, EmployeeEntity.class);
+        entity.setUpdateTime(new Date());
+        if (StringUtils.isEmpty(entity.getBirthday())) {
+            entity.setBirthday(null);
+        }
+        if (CollectionUtils.isNotEmpty(employeeUpdateDTO.getPositionIdList())) {
+            //删除旧的关联关系 添加新的关联关系
+            positionService.removePositionRelation(entity.getId());
+            PositionRelationAddDTO positionRelAddDTO = new PositionRelationAddDTO(employeeUpdateDTO.getPositionIdList(), entity.getId());
+            positionService.addPositionRelation(positionRelAddDTO);
+        }
+        entity.setIsDisabled(employeeEntity.getIsDisabled());
+        entity.setIsLeave(employeeEntity.getIsLeave());
+        entity.setCreateUser(employeeEntity.getCreateUser());
+        entity.setCreateTime(employeeEntity.getCreateTime());
+        entity.setUpdateTime(new Date());
+        employeeDao.updateById(entity);
+        employeeCache.remove(employeeId);
+
+        return ResponseDTO.succ();
+    }
+
+    /**
+     * 更新密码
+     *
+     * @param updatePwdDTO
+     * @param requestToken
+     * @return
+     */
+    public ResponseDTO<String> updatePwd(EmployeeUpdatePwdDTO updatePwdDTO, RequestTokenBO requestToken) {
+        Long employeeId = requestToken.getRequestUserId();
+        EmployeeEntity employee = employeeDao.selectById(employeeId);
+        if (employee == null) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.EMP_NOT_EXISTS);
+        }
+        /** 判断原密码是否正确 **/
+        if (!employee.getLoginPwd().equals(SmartDigestUtil.encryptPassword(CommonConst.Password.SALT_FORMAT, updatePwdDTO.getOldPwd()))) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.PASSWORD_ERROR);
+        }
+        employee.setLoginPwd(SmartDigestUtil.encryptPassword(CommonConst.Password.SALT_FORMAT, updatePwdDTO.getPwd()));
+        employeeDao.updateById(employee);
+        employeeCache.remove(employeeId);
+        return ResponseDTO.succ();
+    }
+
+
+    /**
+     * 重置密码
+     *
+     * @param employeeId
+     * @return
+     */
+    public ResponseDTO resetPasswd(Integer employeeId) {
+        String md5Password = SmartDigestUtil.encryptPassword(CommonConst.Password.SALT_FORMAT, RESET_PASSWORD);
+        employeeDao.updatePassword(employeeId, md5Password);
+        employeeCache.remove(employeeId);
+        return ResponseDTO.succ();
+    }
+
+    /**
+     * 删除员工
+     *
+     * @param employeeId 员工ID
+     * @return
+     */
+    public ResponseDTO<String> deleteEmployeeById(Long employeeId) {
+        EmployeeEntity employeeEntity = employeeDao.selectById(employeeId);
+        if (null == employeeEntity) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.EMP_NOT_EXISTS);
+        }
+        //软删除
+        employeeEntity.setIsDelete(JudgeEnum.YES.getValue().longValue());
+        employeeDao.updateById(employeeEntity);
+        employeeCache.remove(employeeId);
+        return ResponseDTO.succ();
+    }
+    /**
+     * 更新禁用状态
+     *
+     * @param employeeId
+     * @param status
+     * @return
+     */
+    public ResponseDTO<String> updateStatus(Long employeeId, Integer status) {
+        if (null == employeeId) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.EMP_NOT_EXISTS);
+        }
+        EmployeeBO entity = getById(employeeId);
+        if (null == entity) {
+            return ResponseDTO.wrap(EmployeeResponseCodeConst.EMP_NOT_EXISTS);
+        }
+        List<Long> empIds = Lists.newArrayList();
+        empIds.add(employeeId);
+        employeeDao.batchUpdateStatus(empIds, status);
+        employeeCache.remove(employeeId);
+        return ResponseDTO.succ();
+    }
+
+    /**
+     * 批量更新员工状态
+     *
+     * @param batchUpdateStatusDTO
+     * @return
+     */
+    public ResponseDTO<String> batchUpdateStatus(EmployeeBatchUpdateStatusDTO batchUpdateStatusDTO) {
+        employeeDao.batchUpdateStatus(batchUpdateStatusDTO.getEmployeeIds(), batchUpdateStatusDTO.getStatus());
+        if (batchUpdateStatusDTO.getEmployeeIds() != null) {
+            batchUpdateStatusDTO.getEmployeeIds().forEach(e -> employeeCache.remove(e));
+        }
+        return ResponseDTO.succ();
+    }
 
 }
