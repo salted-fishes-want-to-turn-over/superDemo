@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * 岗位关联关系
- *
+ * 员工 1 - * 岗位
  * @author zzr
  */
 @Data

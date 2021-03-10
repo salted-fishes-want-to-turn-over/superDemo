@@ -21,11 +21,11 @@ public class SwaggerTagConst {
 
         public static final String MANAGER_ROLE = "管理端-角色";
 
+        public static final String MANAGER_ROLE_USER = "管理端-角色用户";
+
+        public static final String MANAGER_ROLE_PRIVILEGE = "管理端-角色权限";
+
 //        public static final String MANAGER_SYSTEM_CONFIG = "管理端-系统配置";
-//
-//        public static final String MANAGER_ROLE_USER = "管理端-角色用户";
-//
-//        public static final String MANAGER_ROLE_PRIVILEGE = "管理端-角色权限";
 //
 //        public static final String MANAGER_SMART_RELOAD = "管理端-smart reload";
 //

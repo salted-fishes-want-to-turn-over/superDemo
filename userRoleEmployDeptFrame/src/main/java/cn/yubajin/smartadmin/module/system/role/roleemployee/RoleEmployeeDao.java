@@ -1,5 +1,7 @@
 package cn.yubajin.smartadmin.module.system.role.roleemployee;
 
+import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
+import cn.yubajin.smartadmin.module.system.role.basic.domain.dto.RoleQueryDTO;
 import cn.yubajin.smartadmin.module.system.role.roleemployee.domain.RoleEmployeeEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,4 +32,47 @@ public interface RoleEmployeeDao extends BaseMapper<RoleEmployeeEntity> {
      */
     void deleteByRoleId(@Param("roleId")Long roleId);
 
+    /**
+     * 按角色名分页查找员工
+     * @param page
+     * @param queryDTO
+     * @return
+     */
+    List<EmployeeDTO> selectEmployeeByNamePage(Page page, @Param("queryDTO") RoleQueryDTO queryDTO);
+
+
+    /**
+     * 根据角色id 获取所有员工列表(不分页)
+     * @param roleId
+     * @return
+     */
+    List<EmployeeDTO> selectEmployeeByRoleId(@Param("roleId") Long roleId);
+
+
+    /**
+     * 根据员工id 查询所有的角色
+     * @param employeeId
+     * @return
+     */
+    List<Long> selectRoleIdByEmployeeId(@Param("employeeId") Long employeeId);
+
+    /**
+     * 根据 员工和角色 删除关系
+     * @param employeeId
+     * @param roleId
+     */
+    void deleteByEmployeeIdRoleId(@Param("employeeId") Long employeeId,@Param("roleId")Long roleId);
+
+    /**
+     * 批量删除某个角色下的某批用户的关联关系
+     * @param roleId
+     * @param employeeIds
+     */
+    void batchDeleteEmployeeRole(@Param("roleId") Long roleId,@Param("employeeIds")List<Long> employeeIds);
+
+    /**
+     * 批量新增
+     * @param roleRelationList
+     */
+    void batchInsert(List<RoleEmployeeEntity> roleRelationList);
 }

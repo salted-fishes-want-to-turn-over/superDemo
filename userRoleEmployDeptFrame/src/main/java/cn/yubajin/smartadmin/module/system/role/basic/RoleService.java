@@ -50,7 +50,7 @@ public class RoleService {
 
     /**
      * 根据角色id 删除
-     *
+     * 角色信息删除， 角色和员工关系也要删除， 角色和权限关系也要删除
      * @param roleId
      * @return ResponseDTO
      */

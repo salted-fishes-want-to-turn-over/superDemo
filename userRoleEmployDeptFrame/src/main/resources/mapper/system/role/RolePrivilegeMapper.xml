@@ -6,7 +6,7 @@
                type="cn.yubajin.smartadmin.module.system.role.roleprivilege.RolePrivilegeDao"></resultMap>
 
     <resultMap id="PrivilegeEntity"
-               type="cn.yubajin.smartadmin.module.system.role.roleprivilege.domain.entity.RolePrivilegeEntity"></resultMap>
+               type="cn.yubajin.smartadmin.module.system.privilege.domain.entity.PrivilegeEntity"></resultMap>
 
     <sql id="baseSql">
         rp.id,
@@ -21,5 +21,30 @@
         DELETE FROM t_role_privilege
         WHERE role_id = #{roleId}
     </delete>
+
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+        INSERT INTO t_role_privilege (role_id, privilege_key, update_time, create_time) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.roleId},
+            #{item.privilegeKey},
+            now(),
+            now()
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="listByRoleId" resultMap="PrivilegeEntity">
+        SELECT p.*
+        FROM
+            t_privilege p
+                left JOIN t_role_privilege rp on p.key = rp.privilege_key
+        WHERE
+            rp.role_id = #{roleId}
+
+    </select>
+
 
 </mapper>

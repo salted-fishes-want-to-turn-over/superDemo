@@ -7,7 +7,8 @@ import lombok.Data;
 /**
  * 
  * [ 角色 权限关系 ]
- * 
+ * 角色 * - * 权限
+ *
  * @version 1.0
  * @since JDK1.8
  * @author yandanyang
