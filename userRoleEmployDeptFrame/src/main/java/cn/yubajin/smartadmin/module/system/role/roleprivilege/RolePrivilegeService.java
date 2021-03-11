@@ -3,7 +3,6 @@ package cn.yubajin.smartadmin.module.system.role.roleprivilege;
 import cn.yubajin.smartadmin.common.domain.ResponseDTO;
 import cn.yubajin.smartadmin.module.system.privilege.dao.PrivilegeDao;
 import cn.yubajin.smartadmin.module.system.privilege.domain.entity.PrivilegeEntity;
-import cn.yubajin.smartadmin.module.system.privilege.service.PrivilegeEmployeeService;
 import cn.yubajin.smartadmin.module.system.role.basic.RoleDao;
 import cn.yubajin.smartadmin.module.system.role.basic.RoleResponseCodeConst;
 import cn.yubajin.smartadmin.module.system.role.basic.domain.entity.RoleEntity;
@@ -96,26 +95,42 @@ public class RolePrivilegeService {
         return ResponseDTO.succData(rolePrivilegeTreeDTO);
     }
 
+    /***
+     * 将整个权限列表依据父子级别关系构建权限树
+     * @param privilegeEntityList 所有权限列表
+     * @return
+     */
     private List<RolePrivilegeSimpleDTO> buildPrivilegeTree(List<PrivilegeEntity> privilegeEntityList) {
         List<RolePrivilegeSimpleDTO> privilegeTree = Lists.newArrayList();
+        /** 首先找到树的根节点**/
         List<PrivilegeEntity> rootPrivilege = privilegeEntityList.stream().filter(e -> e.getParentKey() == null).collect(Collectors.toList());
+        /** 对所有根节点按sort值进行排序 **/
         rootPrivilege.sort(Comparator.comparing(PrivilegeEntity::getSort));
         if (CollectionUtils.isEmpty(rootPrivilege)) {
             return privilegeTree;
         }
         privilegeTree = SmartBeanUtil.copyList(rootPrivilege, RolePrivilegeSimpleDTO.class);
         privilegeTree.forEach(e -> e.setChildren(Lists.newArrayList()));
+        /** 构建权限子树 **/
         this.buildChildPrivilegeList(privilegeEntityList, privilegeTree);
         return privilegeTree;
     }
 
+    /***
+     * 递归构建权限子树
+     * @param privilegeEntityList 所有的权限列表
+     * @param parentMenuList 父权限列表
+     */
     private void buildChildPrivilegeList(List<PrivilegeEntity> privilegeEntityList, List<RolePrivilegeSimpleDTO> parentMenuList) {
         List<String> parentKeyList = parentMenuList.stream().map(RolePrivilegeSimpleDTO :: getKey).collect(Collectors.toList());
+        /** 根据parentkey从权限列表中找到父权限菜单 <列表> 的所有子节点(未按父权限分组) **/
         List<PrivilegeEntity> childEntityList = privilegeEntityList.stream().filter(e -> parentKeyList.contains(e.getParentKey())).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(childEntityList)) {
             return;
         }
+        /** 子权限列表按父菜单分组， 存放map, <key, value>  <parentKey, 权限实体> **/
         Map<String, List<PrivilegeEntity>> listMap = childEntityList.stream().collect(Collectors.groupingBy(PrivilegeEntity :: getParentKey));
+        /** 循环父菜单列表，找到父菜单的子节点并setChildren进去,  **/
         for (RolePrivilegeSimpleDTO rolePrivilegeSimpleDTO : parentMenuList) {
             String key = rolePrivilegeSimpleDTO.getKey();
             List<PrivilegeEntity> privilegeEntities = listMap.get(key);
