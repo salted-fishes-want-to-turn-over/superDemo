@@ -1,10 +1,12 @@
 import cn.yubajin.smartadmin.UserRoleEmployDeptFrameApplication;
+import cn.yubajin.smartadmin.common.domain.ResponseDTO;
 import cn.yubajin.smartadmin.constant.CommonConst;
 import cn.yubajin.smartadmin.module.system.department.domain.vo.DepartmentVO;
 import cn.yubajin.smartadmin.module.system.employee.EmployeeDao;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeLoginFormDTO;
 import cn.yubajin.smartadmin.module.system.login.LoginTokenService;
+import cn.yubajin.smartadmin.module.system.login.domain.KaptchaVO;
 import cn.yubajin.smartadmin.module.system.login.domain.RequestTokenBO;
 import cn.yubajin.smartadmin.module.system.position.PositionDao;
 import cn.yubajin.smartadmin.module.system.position.domain.dto.PositionRelationAddDTO;
@@ -20,11 +22,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = UserRoleEmployDeptFrameApplication.class)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = UserRoleEmployDeptFrameApplication.class)
 public class DepartmentUtilsTest {
 
     private static final String RESET_PASSWORD = "123456";
@@ -37,6 +40,22 @@ public class DepartmentUtilsTest {
 
     @Autowired
     private LoginTokenService loginTokenService;
+
+    private static final String VERIFICATION_CODE_REDIS_PREFIX = "vc_%s";
+
+
+    @Test
+    public void verificationCode() {
+        KaptchaVO kaptchaVO = new KaptchaVO();
+        String vc = buildVerificationCodeRedisKey(UUID.randomUUID().toString());
+        System.out.println("vc: " + vc);
+
+    }
+
+    private String buildVerificationCodeRedisKey(String uuid) {
+        return String.format(VERIFICATION_CODE_REDIS_PREFIX, uuid);
+    }
+
 
     @Test
     public void testStream(){

@@ -6,6 +6,7 @@ import cn.yubajin.smartadmin.common.anno.OperateLog;
 import cn.yubajin.smartadmin.common.domain.ResponseDTO;
 import cn.yubajin.smartadmin.constant.SwaggerTagConst;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeLoginFormDTO;
+import cn.yubajin.smartadmin.module.system.login.domain.KaptchaVO;
 import cn.yubajin.smartadmin.module.system.login.domain.LoginDetailVO;
 import cn.yubajin.smartadmin.module.system.login.domain.RequestTokenBO;
 import cn.yubajin.smartadmin.util.SmartRequestTokenUtil;
@@ -66,6 +67,13 @@ public class LoginController {
             return ResponseDTO.wrap(LoginResponseCodeConst.LOGIN_ERROR);
         }
         return loginService.logoutByToken(requestToken);
+    }
+
+    @GetMapping("/session/verificationCode")
+    @ApiOperation(value = "获取验证码", notes = "获取验证码")
+    @NoNeedLogin
+    public ResponseDTO<KaptchaVO> verificationCode(){
+        return loginService.verificationCode();
     }
 
 }

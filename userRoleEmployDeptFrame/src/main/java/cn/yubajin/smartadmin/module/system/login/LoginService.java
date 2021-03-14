@@ -9,17 +9,26 @@ import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeResponseCod
 import cn.yubajin.smartadmin.module.system.employee.constant.EmployeeStatusEnum;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeDTO;
 import cn.yubajin.smartadmin.module.system.employee.domain.dto.EmployeeLoginFormDTO;
+import cn.yubajin.smartadmin.module.system.login.domain.KaptchaVO;
 import cn.yubajin.smartadmin.module.system.login.domain.LoginDetailVO;
 import cn.yubajin.smartadmin.module.system.login.domain.RequestTokenBO;
 import cn.yubajin.smartadmin.module.system.privilege.service.PrivilegeEmployeeService;
 import cn.yubajin.smartadmin.util.SmartBeanUtil;
 import cn.yubajin.smartadmin.util.SmartDigestUtil;
+import com.google.code.kaptcha.impl.DefaultKaptcha;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * [  ]
@@ -48,6 +57,10 @@ public class LoginService {
 
     @Autowired
     private PrivilegeEmployeeService privilegeEmployeeService;
+
+    @Autowired
+    private DefaultKaptcha defaultKaptcha;
+
 
     /**
      * 登陆
@@ -99,6 +112,46 @@ public class LoginService {
     public ResponseDTO<Boolean> logoutByToken(RequestTokenBO requestToken) {
         privilegeEmployeeService.removeCache(requestToken.getRequestUserId());
         return ResponseDTO.succ();
+    }
+
+    /**
+     * 获取验证码
+     * @return
+     */
+    public ResponseDTO<KaptchaVO> verificationCode() {
+        KaptchaVO kaptchaVO = new KaptchaVO();
+        String uuid = buildVerificationCodeRedisKey(UUID.randomUUID().toString());
+        String kaptchaText = defaultKaptcha.createText();
+
+        String base64Code = "";
+
+        BufferedImage image = defaultKaptcha.createImage(kaptchaText);
+        ByteArrayOutputStream outputStream = null;
+        try {
+            outputStream = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg", outputStream);
+            base64Code = Base64.encodeBase64String(outputStream.toByteArray());
+        } catch (IOException e) {
+            log.error("verificationCode exception .{}", e);
+        }finally {
+            if(outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (Exception e) {
+                    log.error("verificationCode outputStream close exception .{}", e);
+                }
+            }
+        }
+        kaptchaVO.setUuid(uuid);
+        kaptchaVO.setCode("data:image/png;base64," + base64Code);
+
+        //  验证码uuid和验证码数字缓存在redis中
+//        redisValueOperations.set(uuid, kaptchaText, 60L, TimeUnit.SECONDS);
+        return ResponseDTO.succData(kaptchaVO);
+    }
+
+    private String buildVerificationCodeRedisKey(String uuid) {
+        return String.format(VERIFICATION_CODE_REDIS_PREFIX, uuid);
     }
 
 }
